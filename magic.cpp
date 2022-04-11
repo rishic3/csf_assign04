@@ -70,13 +70,13 @@ int main(int argc, char **argv) {
     }
 
     int sectionRange = elf_header->e_shnum;	// number of section headers
-    Elf64_Shdr *section_header = (Elf64_Shdr *) data + elf_header->e_shoff;	// pointer to the start of section header table
+    Elf64_Shdr *section_header = (Elf64_Shdr *) (data + elf_header->e_shoff);	// pointer to the start of section header table
     int string_table_index = elf_header->e_shstrndx;	// index of section header table entry that contains section names
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
 
     for (int i = 0; i < sectionRange; i++) {
 
-        char *name = (char *) shstrtab + section_header->sh_name;
+        char *name = ((char *) shstrtab) + section_header->sh_name;
 
 	    //printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx", i, );
         printf("section name: %s\n", name);
