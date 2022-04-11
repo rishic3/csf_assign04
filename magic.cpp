@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
     }
 
     size_t file_size = statbuf.st_size;
-    char *data = (unsigned char *) mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    unsigned char *data = (unsigned char *) mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (data == MAP_FAILED) {
 	    perror("mmap failed: ");
         return -1;
@@ -74,11 +74,11 @@ int main(int argc, char **argv) {
     int string_table_index = elf_header->e_shstrndx;	// index of section header table entry that contains section names
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
     //Elf32_Shdr *sh_strtab = &shdr[ehdr->e_shstrndx];
-    char *shstrtab_p = data + shstrtab->sh_offset;
+    unsigned char *shstrtab_p = data + shstrtab->sh_offset;
 
     for (int i = 0; i < sectionRange; i++) {
 
-        char *name = shstrtab_p + section_header[i].sh_name;
+        unsigned char *name = shstrtab_p + section_header[i].sh_name;
 	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
         //name currently not working, everything else is though.
 
