@@ -13,40 +13,60 @@
 
 #include "elf_names.h"
 
+#include <iostream>
+#include <errno.h>
+
+using namespace std;
+
 int main(int argc, char **argv) {
+
     if (argc != 2) {
-        printf("Not an ELF file");
-        return 0;
+        return -1;
     }
 
     int fd = open(argv[1], O_RDONLY);
 
     if (fd < 0) {
-	printf("Not an ELF file");
-	return 0;
+	    perror("open failed: ");
+	    return -1;
     }
 
     struct stat statbuf;
     int rc = fstat(fd, &statbuf);
+
     if (rc != 0) {
-  	printf("ERROR: Invalid number of bytes");
-  	return 0;
+        perror("fstat failed: ");
+  	    return -1;
     }
+
     size_t file_size = statbuf.st_size;
     void *data = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (data == (void *)-1) {
-	printf("ERROR: Invalid region of memory");
+	    perror("mmap failed: ");
+        return -1;
     }
 
     Elf64_Ehdr *elf_header = (Elf64_Ehdr *) data;
     //printf(".shstrtab section index is %u\n", elf_header->e_shstrndx);
 
+    if (file_size < 4) {
+        printf("Not an ELF file\n");
+        return 0;
+    }
+
+    // first 4 bytes: {0x7f, 'E', 'L', 'F'}
+
+    if (!((elf_header->e_type[0] == 0x7f) && (elf_header->e_type[1] == 'E') && (elf_header->e_type[2] == 'L') && (elf_header->e_type[3] == 'F'))) {
+        printf("Not an ELF file\n");
+        return 0;
+    }
+
     printf("Object file type: %s\n", get_type_name(elf_header->e_type));
     printf("Instruction set: %s\n", get_machine_name(elf_header->e_machine));
     if (elf_header->e_ident[EI_DATA] == 1) {
-	printf("Endianness: Little endian\n");
+	    printf("Endianness: Little endian\n");
     } else {
-	printf("Endianness: Big endian\n");
+	    printf("Endianness: Big endian\n");
     }
 
     int sectionRange = elf_header->e_shnum;	// number of section headers
