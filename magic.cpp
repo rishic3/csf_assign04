@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     int string_table_index = elf_header->e_shstrndx;	// index of section header table entry that contains section names
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
     //Elf32_Shdr *sh_strtab = &shdr[ehdr->e_shstrndx];
-    const char *const shstrtab_p = data + shstrtab->sh_offset;
+    char *shstrtab_p = data + shstrtab->sh_offset;
 
     for (int i = 0; i < sectionRange; i++) {
 
