@@ -76,8 +76,9 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < sectionRange; i++) {
 
-        char *name = ((char *) shstrtab) + section_header[i].sh_name;
+        char *name = data + ((char *) shstrtab) + section_header[i].sh_name;
 	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
+        //name currently not working, everything else is though.
 
     }
 }
