@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < sectionRange; i++) {
 
-	//printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx", i, )
+	    //printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx", i, );
 
     }
 }
