@@ -73,10 +73,12 @@ int main(int argc, char **argv) {
     Elf64_Shdr *section_header = (Elf64_Shdr *) (data + elf_header->e_shoff);	// pointer to the start of section header table
     int string_table_index = elf_header->e_shstrndx;	// index of section header table entry that contains section names
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
+    //Elf32_Shdr *sh_strtab = &shdr[ehdr->e_shstrndx];
+    const char *const shstrtab_p = data + shstrtab->sh_offset;
 
     for (int i = 0; i < sectionRange; i++) {
 
-        char *name = (char*) data + ((char *) shstrtab) + section_header[i].sh_name;
+        char *name = shstrtab_p + section_header[i].sh_name;
 	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
         //name currently not working, everything else is though.
 
