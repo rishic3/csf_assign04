@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
     }
 
     size_t file_size = statbuf.st_size;
-    unsigned char *data = (unsigned char *) mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    char *data = (unsigned char *) mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (data == MAP_FAILED) {
 	    perror("mmap failed: ");
         return -1;
