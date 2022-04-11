@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 
     // first 4 bytes: {0x7f, 'E', 'L', 'F'}
 
-    if (!((elf_header->e_type[0] == 0x7f) && (elf_header->e_type[1] == 'E') && (elf_header->e_type[2] == 'L') && (elf_header->e_type[3] == 'F'))) {
+    if (!((elf_header->e_ident[0] == 0x7f) && (elf_header->e_ident[1] == 'E') && (elf_header->e_ident[2] == 'L') && (elf_header->e_ident[3] == 'F'))) {
         printf("Not an ELF file\n");
         return 0;
     }
