@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < symbolRange; i++) {
 
-        unsigned char *name = "";
+        unsigned char *name = NULL;
         if (symtab[i].st_name != 0) {
             unsigned char *name = symbol_strtab_p + symtab[i].st_name;
         }
