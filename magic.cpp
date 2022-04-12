@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
     unsigned char *shstrtab_p = data + shstrtab->sh_offset;
 
-    Elf64_Shdr *symtab;	// used to track symbol table
+    Elf64_Sym *symtab;	// used to track symbol table
     int symbol_size;	// used for symbolRange calculation
     int symbol_entry_size;	// used for symbolRange calculation
     Elf64_Shdr *symbol_strtab;	// used for strtab pointer
@@ -105,9 +105,7 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < symbolRange; i++) {
 
-        Elf64_Sym *symbol = (Elf64_Sym *) symtab[i];
         unsigned char *name = symbol_strtab_p + symtab[i].st_name;
-        //Elf64_Sym *name = data + symtab[i].st_name;
         printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
 
     }
