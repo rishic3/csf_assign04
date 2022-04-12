@@ -69,11 +69,11 @@ int main(int argc, char **argv) {
 	    printf("Endianness: Big endian\n");
     }
 
-    int sectionRange = elf_header->e_shnum;	// number of section headers
     Elf64_Shdr *section_header = (Elf64_Shdr *) (data + elf_header->e_shoff);	// pointer to the start of section header table
     int string_table_index = elf_header->e_shstrndx;	// index of section header table entry that contains section names
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
     unsigned char *shstrtab_p = data + shstrtab->sh_offset;
+    int sectionRange = elf_header->e_shnum;	// number of section headers
 
     Elf64_Sym *symtab;	// used to track symbol table
     int symbol_size;	// used for symbolRange calculation
@@ -105,7 +105,9 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < symbolRange; i++) {
 
-        unsigned char *name = symbol_strtab_p + symtab[i].st_name;
+        if (symtab[i].st_name != 0) {
+            unsigned char *name = symbol_strtab_p + symtab[i].st_name;
+        }
         printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx\n", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
 
     }
