@@ -79,36 +79,50 @@ int main(int argc, char **argv) {
     int symbol_size;	// used for symbolRange calculation
     int symbol_entry_size;	// used for symbolRange calculation
     Elf64_Shdr *symbol_strtab;	// used for strtab pointer
-//    unsigned char *symbol_strtab_p = data + symbol_strtab->sh_offset;
+    int symtabIndex = -1;
 
     for (int i = 0; i < sectionRange; i++) {
 
         unsigned char *name = shstrtab_p + section_header[i].sh_name;
-	printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
+	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
 
         if (section_header[i].sh_type == SHT_SYMTAB) {
+            symtabIndex = i;
             // found symbol table for next step
-	    symtab = &(section_header[i]);
-	    symbol_size = section_header[i].sh_size;
-	    symbol_entry_size = section_header[i].sh_entsize;
+            symtab = &(section_header[i]);
+            symbol_size = section_header[i].sh_size;
+            symbol_entry_size = section_header[i].sh_entsize;
         }
-	if (section_header[i].sh_type == SHT_STRTAB) {
-	    symbol_strtab = &(section_header[i]);
-	}
+
+        if (section_header[i].sh_type == SHT_STRTAB) {
+	        symbol_strtab = &(section_header[i]);
+	    }
 
     }
 
-
+    unsigned char *symbol_strtab_p = data + symbol_strtab->sh_offset;
     int symbolRange = symbol_size / symbol_entry_size;
 
     for (int i = 0; i < symbolRange; i++) {
 
-	//Elf64_Sym *symbol = (Elf64_Sym *) symtab[i];
-//	unsigned char *name = symbol_strtab_p;
-	//Elf64_Sym *name = data + symtab[i].st_name;
-	//printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx", i, );
+        Elf64_Sym *symbol = (Elf64_Sym *) symtab[i];
+        unsigned char *name = symbol_strtab_p + symtab[i].st_name;
+        //Elf64_Sym *name = data + symtab[i].st_name;
+        printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
 
     }
+
+#if 0
+    typedef struct
+        {
+        Elf64_Word    st_name;                /* Symbol name (string tbl index) */
+        unsigned char st_info;                /* Symbol type and binding */
+        unsigned char st_other;               /* Symbol visibility */
+        Elf64_Section st_shndx;               /* Section index */
+        Elf64_Addr    st_value;               /* Symbol value */
+        Elf64_Xword   st_size;                /* Symbol size */
+        } Elf64_Sym;
+#endif
 
 }
 
