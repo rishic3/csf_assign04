@@ -105,10 +105,7 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < symbolRange; i++) {
 
-        unsigned char *name = NULL;
-        if (symtab[i].st_name != 0) {
-            unsigned char *name = symbol_strtab_p + symtab[i].st_name;
-        }
+        unsigned char *name = symbol_strtab_p + symtab[i].st_name;
         printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx\n", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
 
     }
