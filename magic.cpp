@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
         if (section_header[i].sh_type == SHT_SYMTAB) {
             symtabIndex = i;
             // found symbol table for next step
-            symtab = &(section_header[i]);
+            symtab = (Elf64_Sym*) &(section_header[i]);
             symbol_size = section_header[i].sh_size;
             symbol_entry_size = section_header[i].sh_entsize;
         }
