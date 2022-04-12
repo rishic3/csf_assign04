@@ -75,20 +75,38 @@ int main(int argc, char **argv) {
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
     unsigned char *shstrtab_p = data + shstrtab->sh_offset;
 
+    Elf64_Shdr *symtab;	// used to track symbol table
+    int symbol_size;	// used for symbolRange calculation
+    int symbol_entry_size;	// used for symbolRange calculation
+    Elf64_Shdr *symbol_strtab;	// used for strtab pointer
+//    unsigned char *symbol_strtab_p = data + symbol_strtab->sh_offset;
+
     for (int i = 0; i < sectionRange; i++) {
 
         unsigned char *name = shstrtab_p + section_header[i].sh_name;
-	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
+	printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
 
         if (section_header[i].sh_type == SHT_SYMTAB) {
             // found symbol table for next step
+	    symtab = &(section_header[i]);
+	    symbol_size = section_header[i].sh_size;
+	    symbol_entry_size = section_header[i].sh_entsize;
         }
+	if (section_header[i].sh_type == SHT_STRTAB) {
+	    symbol_strtab = &(section_header[i]);
+	}
 
     }
 
-    int symbolRange; // symtab sh_size / symtab sh_entsize
+
+    int symbolRange = symbol_size / symbol_entry_size;
 
     for (int i = 0; i < symbolRange; i++) {
+
+	//Elf64_Sym *symbol = (Elf64_Sym *) symtab[i];
+//	unsigned char *name = symbol_strtab_p;
+	//Elf64_Sym *name = data + symtab[i].st_name;
+	//printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx", i, );
 
     }
 
