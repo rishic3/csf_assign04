@@ -79,7 +79,6 @@ int main(int argc, char **argv) {
     int symbol_size;	// used for symbolRange calculation
     int symbol_entry_size;	// used for symbolRange calculation
     Elf64_Shdr *symbol_strtab;	// used for strtab pointer
-    int symtabIndex = -1;
 
     for (int i = 0; i < sectionRange; i++) {
 
@@ -87,7 +86,6 @@ int main(int argc, char **argv) {
 	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
 
         if (section_header[i].sh_type == SHT_SYMTAB) {
-            symtabIndex = i;
             // found symbol table for next step
             symtab = (Elf64_Sym*) &(section_header[i]);
             symbol_size = section_header[i].sh_size;
