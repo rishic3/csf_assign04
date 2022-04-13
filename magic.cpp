@@ -85,10 +85,10 @@ int main(int argc, char **argv) {
 
         unsigned char *name = shstrtab_p + section_header[i].sh_name;
         //find strtab section
-        if (strcmp(name, ".strtab") == 0) {
+        if (strcmp((const char*) name, ".strtab") == 0) {
             symbol_strtab = &(section_header[i]);
         }
-        
+
 	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
 
         if (section_header[i].sh_type == SHT_SYMTAB) {
