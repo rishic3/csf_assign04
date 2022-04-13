@@ -84,6 +84,11 @@ int main(int argc, char **argv) {
     for (int i = 0; i < sectionRange; i++) {
 
         unsigned char *name = shstrtab_p + section_header[i].sh_name;
+        //find strtab section
+        if (strcmp(name, ".strtab") == 0) {
+            symbol_strtab = &(section_header[i]);
+        }
+        
 	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
 
         if (section_header[i].sh_type == SHT_SYMTAB) {
@@ -93,10 +98,12 @@ int main(int argc, char **argv) {
             symbol_entry_size = section_header[i].sh_entsize;
         }
 
+        /*
         if (section_header[i].sh_type == SHT_STRTAB) {
 	        symbol_strtab = &(section_header[i]);
             printf("strtab offset: %d\n", symbol_strtab->sh_offset);
 	    }
+        */
 
     }
 
