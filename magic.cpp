@@ -73,6 +73,7 @@ int main(int argc, char **argv) {
     int string_table_index = elf_header->e_shstrndx;	// index of section header table entry that contains section names
     Elf64_Shdr *shstrtab = &(section_header[string_table_index]);
     unsigned char *shstrtab_p = data + shstrtab->sh_offset;
+    printf("shstrtab offset: %d\n", shstrtab->sh_offset);
     int sectionRange = elf_header->e_shnum;	// number of section headers
 
     Elf64_Sym *symtab;	// used to track symbol table
@@ -94,6 +95,7 @@ int main(int argc, char **argv) {
 
         if (section_header[i].sh_type == SHT_STRTAB) {
 	        symbol_strtab = &(section_header[i]);
+            printf("strtab offset: %d\n", symbol_strtab->sh_offset);
 	    }
 
     }
@@ -103,8 +105,7 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < symbolRange; i++) {
 
-        //unsigned char *name = symbol_strtab_p + symtab[i].st_name;
-        unsigned char *name = shstrtab_p + symtab[i].st_name;
+        unsigned char *name = symbol_strtab_p + symtab[i].st_name;
         printf("st_name: %d\n", symtab[i].st_name);
         printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx\n", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
 
