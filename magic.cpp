@@ -94,7 +94,6 @@ int main(int argc, char **argv) {
 
         if (section_header[i].sh_type == SHT_STRTAB) {
 	        symbol_strtab = &(section_header[i]);
-
 	    }
 
     }
@@ -104,7 +103,8 @@ int main(int argc, char **argv) {
 
     for (int i = 0; i < symbolRange; i++) {
 
-        unsigned char *name = symbol_strtab_p + symtab[i].st_name;
+        //unsigned char *name = symbol_strtab_p + symtab[i].st_name;
+        unsigned char *name = shstrtab_p + symtab[i].st_name;
         printf("st_name: %d\n", symtab[i].st_name);
         printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx\n", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
 
