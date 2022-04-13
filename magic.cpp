@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
             symbol_strtab = &(section_header[i]);
         }
 
-	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
+	    printf("Section header %u: name=%s, type=%lx, offset=%lx, size=%lx\n", i, name, (long unsigned int) section_header[i].sh_type, section_header[i].sh_offset, section_header[i].sh_size);
 
         if (section_header[i].sh_type == SHT_SYMTAB) {
             // found symbol table for next step
@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < symbolRange; i++) {
 
         unsigned char *name = symbol_strtab_p + symtab[i].st_name;
-        printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx\n", i, name, symtab[i].st_size, symtab[i].st_info, symtab[i].st_other);
+        printf("Symbol %u: name=%s, size=%lx, info=%lx, other=%lx\n", i, name, symtab[i].st_size, (long unsigned int) symtab[i].st_info, (long unsigned int) symtab[i].st_other);
 
     }
 
